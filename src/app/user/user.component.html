@@ -5,18 +5,13 @@
             <th>Email</th>
             <th>City</th>
         </tr>
-
+        @for (user of this.allUsers; track $index) {
         <tr>
-            <td>Dein Name</td>
-            <td>Deine Mail</td>
-            <td>Deine Stadt</td>
+            <td>{{user.firstName}}</td>
+            <td>Email</td>
+            <td>{{user.city}}</td>
         </tr>
-        <div></div>
-        <tr>
-            <td>Dein Name 2</td>
-            <td>Deine Mail 2</td>
-            <td>Deine Stadt 2</td>
-        </tr>
+        }
     </table>
 </mat-card>
 
