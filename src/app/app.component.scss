@@ -15,7 +15,11 @@
   padding: 16px;
   display: flex;
   align-items: center;
+  justify-content: center;
   min-height: 24px;
+  > img {
+    width: 200px;
+  }
 }
 
 .mat-toolbar-row {
