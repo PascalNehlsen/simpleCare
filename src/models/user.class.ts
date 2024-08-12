@@ -14,7 +14,7 @@ export class User {
     this.street = obj?.street || '';
     this.zipCode = obj?.zipCode || '';
     this.city = obj?.city || '';
-    this.email = obj?.city || '';
+    this.email = obj?.email || '';
   }
 
   public toJSON() {
