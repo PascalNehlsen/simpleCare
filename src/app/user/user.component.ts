@@ -40,13 +40,10 @@ export class UserComponent implements OnInit {
 
       snapshot.docChanges().forEach((change) => {
         if (change.type === 'added') {
-          console.log('Neues Dokument:', change.doc.data());
         }
         if (change.type === 'modified') {
-          console.log('Geändertes Dokument:', change.doc.data());
         }
         if (change.type === 'removed') {
-          console.log('Gelöschtes Dokument:', change.doc.data());
         }
       });
     });
