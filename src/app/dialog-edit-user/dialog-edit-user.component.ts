@@ -1,31 +1,45 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { MatDialogModule } from '@angular/material/dialog';
-import { MatFormField, MatFormFieldModule } from '@angular/material/form-field';
-import { MatIconModule } from '@angular/material/icon';
+import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { MatProgressBar } from '@angular/material/progress-bar';
 import { User } from '../../models/user.class';
+import { MatButtonModule } from '@angular/material/button';
+import { doc, Firestore, updateDoc } from '@angular/fire/firestore';
 
 @Component({
   selector: 'app-dialog-edit-user',
   standalone: true,
   imports: [
-    MatIconModule,
-    MatFormField,
-    MatProgressBar,
-    CommonModule,
-    MatInputModule,
-    MatFormFieldModule,
     MatDialogModule,
+    MatFormFieldModule,
+    CommonModule,
     FormsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
   ],
   templateUrl: './dialog-edit-user.component.html',
   styleUrl: './dialog-edit-user.component.scss',
 })
 export class DialogEditUserComponent {
   user!: User;
+  userId!: string;
+  private firestore: Firestore = inject(Firestore);
 
-  saveUser() {}
+  constructor(public dialogRef: MatDialogRef<DialogEditUserComponent>) {}
+
+  saveUser() {
+    const userRef = doc(this.firestore, 'users', this.userId); // Verweis auf das spezifische Dokument
+
+    updateDoc(userRef, this.user.toJSON()) // Aktualisieren des Dokuments mit den neuen Daten
+      .then(() => {
+        console.log('User successfully updated');
+      })
+      .catch((error) => {
+        console.error('Error updating user: ', error);
+      });
+    this.dialogRef.close();
+  }
 }

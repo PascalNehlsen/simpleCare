@@ -1,5 +1,11 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { doc, Firestore, getDoc } from '@angular/fire/firestore';
+import {
+  doc,
+  Firestore,
+  getDoc,
+  onSnapshot,
+  Unsubscribe,
+} from '@angular/fire/firestore';
 import { MatCard, MatCardModule } from '@angular/material/card';
 import { ActivatedRoute } from '@angular/router';
 import { User } from '../../models/user.class';
@@ -29,6 +35,7 @@ export class UserDetailComponent implements OnInit {
 
   userId = '';
   user: User = new User();
+  private unsubscribeUser: Unsubscribe | null = null;
 
   ngOnInit(): void {
     this.route.paramMap.subscribe((paramMap) => {
@@ -44,25 +51,36 @@ export class UserDetailComponent implements OnInit {
   getUser() {
     const docRef = doc(this.firestore, 'users', this.userId);
 
-    getDoc(docRef)
-      .then((docSnap) => {
+    this.unsubscribeUser = onSnapshot(
+      docRef,
+      (docSnap) => {
         if (docSnap.exists()) {
           this.user = docSnap.data() as User;
         } else {
           console.log('Kein Dokument gefunden');
         }
-      })
-      .catch((error) => {
+      },
+      (error) => {
         console.error('Fehler beim Abrufen des Dokuments:', error);
-      });
+      }
+    );
+  }
+
+  ngOnDestroy(): void {
+    if (this.unsubscribeUser) {
+      this.unsubscribeUser();
+    }
   }
 
   editMenu() {
     const dialog = this.dialog.open(DialogEditAddressComponent);
-    dialog.componentInstance.user = this.user;
+    dialog.componentInstance.user = new User(this.user);
+    dialog.componentInstance.userId = this.userId;
   }
 
   editUser() {
-    this.dialog.open(DialogEditUserComponent);
+    const dialog = this.dialog.open(DialogEditUserComponent);
+    dialog.componentInstance.user = new User(this.user);
+    dialog.componentInstance.userId = this.userId;
   }
 }
