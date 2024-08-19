@@ -32,19 +32,10 @@ export class UserComponent implements OnInit {
   ngOnInit(): void {
     const colRef = collection(this.firestore, 'users');
 
-    const unsub = onSnapshot(colRef, (snapshot) => {
+    onSnapshot(colRef, (snapshot) => {
       this.allUsers = [];
       snapshot.forEach((doc) => {
         this.allUsers.push({ id: doc.id, ...doc.data() });
-      });
-
-      snapshot.docChanges().forEach((change) => {
-        if (change.type === 'added') {
-        }
-        if (change.type === 'modified') {
-        }
-        if (change.type === 'removed') {
-        }
       });
     });
   }

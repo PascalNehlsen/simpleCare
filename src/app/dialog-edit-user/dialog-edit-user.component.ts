@@ -31,9 +31,9 @@ export class DialogEditUserComponent {
   constructor(public dialogRef: MatDialogRef<DialogEditUserComponent>) {}
 
   saveUser() {
-    const userRef = doc(this.firestore, 'users', this.userId); // Verweis auf das spezifische Dokument
+    const userRef = doc(this.firestore, 'users', this.userId);
 
-    updateDoc(userRef, this.user.toJSON()) // Aktualisieren des Dokuments mit den neuen Daten
+    updateDoc(userRef, this.user.toJSON())
       .then(() => {
         console.log('User successfully updated');
       })

@@ -43,7 +43,7 @@ export class UserDetailComponent implements OnInit {
       if (this.userId) {
         this.getUser();
       } else {
-        console.log('Keine userId vorhanden');
+        console.log('no userId');
       }
     });
   }
@@ -57,11 +57,11 @@ export class UserDetailComponent implements OnInit {
         if (docSnap.exists()) {
           this.user = docSnap.data() as User;
         } else {
-          console.log('Kein Dokument gefunden');
+          console.log('No Document found');
         }
       },
       (error) => {
-        console.error('Fehler beim Abrufen des Dokuments:', error);
+        console.error('Reading Document error', error);
       }
     );
   }
